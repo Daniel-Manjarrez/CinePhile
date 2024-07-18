@@ -1,0 +1,227 @@
+/* General Styling */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+/* Title Section */
+h1, h2, h3, h4, h5 {
+    color: #ffc107; /* IMDB yellow */
+}
+
+/* Introduction Text */
+.intro {
+    font-size: 1.2em;
+    color: #bdbdbd;
+    margin-bottom: 20px;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #1a1a1a; /* Slightly grayer than the background */
+    border-bottom: 1px solid #333; /* Slight border at the bottom for separation */
+}
+
+.navbar-brand, .nav-link {
+    color: #ffc107 !important; /* IMDB yellow color */
+    font-weight: bold;
+}
+
+.navbar-toggler-icon {
+    filter: invert(100%); /* Make the toggler icon white */
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #e0a800 !important; /* Slightly darker yellow on hover */
+}
+
+/* Optional: Adjust the container for better alignment */
+.container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Card Styling */
+.card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    margin-bottom: 15px;
+}
+
+.space-bio {
+    margin-top: 10px;
+}
+
+.recent {
+    margin-right: 0px;
+}
+
+.buttons-row {
+    margin-top: 5px;
+}
+
+.up {
+    margin-top: 10px;
+}
+
+.down {
+    margin-top: 20px;
+}
+
+.card-text {
+    color: #bdbdbd;
+}
+
+.btn-primary {
+    background-color: #ffc107;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+/* Input Field */
+input[type="text"] {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"]::placeholder {
+    color: #bdbdbd;
+}
+
+/* Autocomplete */
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    z-index: 1000;
+}
+
+.ui-menu-item-wrapper {
+    padding: 10px;
+}
+
+.ui-state-active {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+/* Movie Details Section */
+.card .row.no-gutters {
+    flex-wrap: nowrap;
+}
+
+.card-img {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.card-body .card-title {
+    color: #ffc107;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.sum-close {
+    position: relative;
+    top: -8px;
+}
+
+.ratings {
+    position: relative;
+    bottom: -10px;
+}
+
+.red {
+    color: salmon;
+}
+
+.green {
+    color: lightgreen;
+}
+
+.blue {
+    color: aqua;
+}
+
+.watch-space-down {
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
+.uppers {
+    position: relative;
+    top: -15px;
+}
+
+.draw-closer {
+    margin-left: -100px;
+}
+
+.draw-closer2 {
+    position: relative;
+    left: 160px;
+}
+
+.friend-bottom {
+    margin-bottom: 20px;
+}

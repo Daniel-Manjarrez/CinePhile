@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>Overview On {{ title }}</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following are the details of your generated recommendation.</i></span>
+    </div>
+
+    <!-- Movie Details Section -->
+    <div class="row">
+        <div class="col-6 mb-3">
+            <h2>{{ movie.title }}</h2>
+        </div>
+        <div class="col-6 mb-3 ratings">
+            <i>
+                <b>Movie Rating:</b> {{ movie.us_rating }} 
+                <b>User Score:</b> {{ movie.user_rating }} / 10 
+                <b>Critic Score:</b> {{ movie.critic_score }} %
+            </i>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            {% if movie.trailer %}
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="{{ trailer }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            {% else %}
+                <p>No trailer available</p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6 mb-3 sum-close">
+            <p>{{ sum }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

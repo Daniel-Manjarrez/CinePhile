@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>Add Movie/Series</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>This page serves to add a movie or series to your list.</i></span>
+    </div>
+
+    <!-- Movie Input Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <label for="movie-name" class="form-label">What title would you like to add?</label>
+            <input type="text" class="form-control" id="movie-name" placeholder="Type a Title">
+        </div>
+    </div>
+
+    <!-- Type Radio Buttons Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3 text-center">
+            <label class="form-label">Select type:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="type" id="movie" value="Movie" checked>
+                <label class="form-check-label" for="movie">
+                    Movie
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="type" id="series" value="Series">
+                <label class="form-check-label" for="series">
+                    Series
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Radio Buttons Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3 text-center">
+            <label class="form-label">Select status:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="status" id="watching" value="Watching" checked>
+                <label class="form-check-label" for="watching">
+                    Watching
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="status" id="completed" value="Completed">
+                <label class="form-check-label" for="completed">
+                    Completed
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="status" id="on-hold" value="OnHold">
+                <label class="form-check-label" for="on-hold">
+                    On Hold
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Button Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3 text-center">
+            <a href="/movie/O" class="btn btn-primary" id="generate-button">Add</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to print message to console
+    function printMessage(event) {
+        var movieTitle = document.getElementById("movie-name").value.trim(); // Trim whitespace
+        var status = document.querySelector('input[name="status"]:checked').value; // Get selected status
+        var type = document.querySelector('input[name="type"]:checked').value;
+        if (movieTitle) {
+            var movieLink = "/processed/" + encodeURIComponent(type) + "/" + encodeURIComponent(status) + "/" + encodeURIComponent(movieTitle);
+            document.getElementById("generate-button").setAttribute("href", movieLink);
+            console.log("Generated link:", movieLink);
+        } else {
+            console.log("Please enter a movie title.");
+        }
+    }
+
+    // Function to handle keypress event
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') { // Check if Enter key is pressed
+            event.preventDefault(); // Prevent form submission if applicable
+            document.getElementById("generate-button").click(); // Trigger the Generate button click
+        }
+    }
+
+    // Attach event listener to the Generate button
+    document.getElementById("generate-button").addEventListener("click", printMessage);
+
+    // Attach keypress event listener to the input field
+    document.getElementById("movie-name").addEventListener("keypress", handleKeyPress);
+</script>
+
+{% endblock %}

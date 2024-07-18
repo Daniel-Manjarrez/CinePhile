@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>{{ given_user }}'s Movies</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following is {{ given_user }}'s complete movies list:</i></span>
+    </div>
+
+    {% for movie in movie_titles %}
+        <div class="row">
+            <div class="col-6 mb-3">
+                {% if movie[1] == "Watching" %}
+                    <h2>{{ movie[0].title }} (<span class="red">{{ movie[1] }}</span>)</h2>
+                {% elif movie[1] == "Completed" %}
+                    <h2>{{ movie[0].title }} (<span class="green">{{ movie[1] }}</span>)</h2>
+                {% elif movie[1] == "On Hold" %}
+                    <h2>{{ movie[0].title }} (<span class="blue">{{ movie[1] }}</span>)</h2>
+                {% else %}
+                    <h2>{{ movie[0].title }} ({{ movie[1] }})</h2>
+                {% endif %}
+            </div>
+            <div class="col-6 mb-3 ratings">
+                <i>
+                    <b>Movie Rating:</b> {{ movie[0].us_rating }} 
+                    <b>User Score:</b> {{ movie[0].user_rating }} / 10 
+                    <b>Critic Score:</b> {{ movie[0].critic_score }} %
+                </i>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                {% if movie[0].trailer %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ movie[2] }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% else %}
+                    <p>No trailer available</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3 sum-close">
+                <p>{{ movie[0].plot_overview }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

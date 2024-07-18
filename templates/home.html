@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5 uppers">
+    <!-- Title Section -->
+    <div class="mb-4">
+        <h1>Hello, {{ user.username }}</h1>
+    </div>
+
+    <!-- Movie Recommendations Section -->
+    <div class="row">
+        <div class="col-md-4 d-flex align-items-stretch mb-4">
+            <div class="card" style="width: 100%; height: 95%;">
+                <a href="/">
+                    <img 
+                        src="https://cdn.myanimelist.net/s/common/userimages/dd32b9ac-4642-4743-936f-c551486b3396_225w?s=952a217493e230e0141e16d4c1fe5be7" 
+                        class="card-img-top image-modified" 
+                        alt="profile pic">
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title down">User Info</h5>
+                    <p class="card-text"><strong>Gender:</strong> {{ user.gender }} </p>
+                    <p class="card-text"><strong>Birthdate:</strong> {{ user.birthdate }}</p>
+                    <p class="card-text"><strong>Joined:</strong> {{ user.joined }}</p>
+                    <p class="card-text"><strong>Status:</strong> {{ user.status }}</p>
+                    <div class="buttons-row">
+                        <a href="/{{ user.username }}/series" class="btn btn-primary mt-auto">Series</a>
+                        <a href="/{{ user.username }}/movies" class="btn btn-primary mt-auto">Movies</a>
+                        <a href="/{{ user.username }}/all" class="btn btn-primary mt-auto">See All</a>
+                        <a href="/{{ user.username }}/friends" class="btn btn-primary mt-auto">Friends</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 d-flex align-items-stretch mb-4">
+            <div class="intro">
+                <i>Diving deep into captivating storylines, thrilling adventures, and fantastical worlds across various genres, from superhero blockbusters to chilling horror tales, epic sci-fi sagas, and stunning animated masterpieces. Always on the lookout for my next great watch, I enjoy delving into diverse narratives and discussing the intricacies of storytelling. Let's geek out over our favorite shows and movies together!</i>
+                <h5 class="card-title space-bio">Series and Movies Stats</h5>
+                
+                <div class="row">
+                    <div class="col-md-5 mb-4">
+                        <span class="red">Watching:</span> {{ user.watching }}<br>
+                        <span class="green">Completed:</span> {{ user.completed }}<br>
+                        <span class="blue">On Hold:</span> {{ user.on_hold }}<br>
+                    </div>
+                    <div class="col-md-7 mb-4">
+                        <img src="static/images/proportional_bar.png" style="width: 100%; height: 70%;">
+                    </div>
+                </div>
+                <h5 class="card-title space-bio watch-space-down">Recently Watched</h5>
+                <div class="row">
+                    {% for movie in recent %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 100%;">
+                                <a href="/overview/{{ movie.title }}">
+                                    <img 
+                                        src="{{ movie.backdrop }}" 
+                                        class="card-img-top image-modified" 
+                                        alt="profile pic">
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

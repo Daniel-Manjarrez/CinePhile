@@ -1,0 +1,6 @@
+stuff we want to grab:
+'runtime_minutes', 'genre_names', 'user_rating', 'critic_score',
+'us_rating', 'poster', 'backdrop', 'trailer'
+simple web interface showcasing these recommendations
+
+chatgpt to autocorrect user input

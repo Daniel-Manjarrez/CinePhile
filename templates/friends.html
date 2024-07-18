@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>{{ given_user }}'s Friends</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following is {{ given_user }}'s complete friends list:</i></span>
+    </div>
+
+    {% for friend in friends %}
+        <div class="row">
+            <div class="col-6 mb-3 draw-closer2">
+                <a href="/{{ friend.username }}/profile">
+                    <h2>{{ friend.username }}</h2>
+                </a>
+            </div>
+            <div class="col-6 mb-3 ratings draw-closer">
+                <i>
+                    <b>Status:</b> <span style="color:salmon;">{{ friend.status }} </span>
+                    <b>Joined:</b> <span style="color:lightgreen;">{{ friend.joined }} </span>
+                    <b>Birthdate:</b> <span style="color:aqua;">{{ friend.birthdate }} </span>
+                </i>
+            </div>
+
+            <div class="col-md-6 mb-3 draw-closer2">
+                {% if friend.profile_picture %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ friend.profile_picture }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% else %}
+                    <p>No profile picture available</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3 sum-close draw-closer">
+                <p>{{ friend.bio }}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

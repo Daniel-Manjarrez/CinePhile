@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>Find Users</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>This page serves to help you find a user.</i></span>
+    </div>
+
+    <!-- Movie Input Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <label for="movie-name" class="form-label">What username would you like to look up?</label>
+            <input type="text" class="form-control" id="movie-name" placeholder="Type a username">
+        </div>
+    </div>
+
+    <!-- Generate Button Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3 text-center">
+            <a href="/movie/O" class="btn btn-primary" id="generate-button">Search</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to print message to console
+    function printMessage(event) {
+        var movieTitle = document.getElementById("movie-name").value.trim(); // Trim whitespace
+        if (movieTitle) {
+            var movieLink = "/" + encodeURIComponent(movieTitle) + "/profile";
+            document.getElementById("generate-button").setAttribute("href", movieLink);
+            console.log("Generated link:", movieLink);
+        } else {
+            console.log("Please enter a movie title.");
+        }
+    }
+
+    // Function to handle keypress event
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') { // Check if Enter key is pressed
+            event.preventDefault(); // Prevent form submission if applicable
+            document.getElementById("generate-button").click(); // Trigger the Generate button click
+        }
+    }
+
+    // Attach event listener to the Generate button
+    document.getElementById("generate-button").addEventListener("click", printMessage);
+
+    // Attach keypress event listener to the input field
+    document.getElementById("movie-name").addEventListener("keypress", handleKeyPress);
+</script>
+
+{% endblock %}

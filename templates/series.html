@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>{{ given_user }}'s Series</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following is {{ given_user }}'s complete series list:</i></span>
+    </div>
+
+    {% for series in series_titles %}
+        <div class="row">
+            <div class="col-6 mb-3">
+                {% if series[1] == "Watching" %}
+                    <h2>{{ series[0].title }} (<span class="red">{{ series[1] }}</span>)</h2>
+                {% elif series[1] == "Completed" %}
+                    <h2>{{ series[0].title }} (<span class="green">{{ series[1] }}</span>)</h2>
+                {% elif series[1] == "On Hold" %}
+                    <h2>{{ series[0].title }} (<span class="blue">{{ series[1] }}</span>)</h2>
+                {% else %}
+                    <h2>{{ series[0].title }} ({{ series[1] }})</h2>
+                {% endif %}
+            </div>
+            <div class="col-6 mb-3 ratings">
+                <i>
+                    <b>Movie Rating:</b> {{ series[0].us_rating }} 
+                    <b>User Score:</b> {{ series[0].user_rating }} / 10 
+                    <b>Critic Score:</b> {{ series[0].critic_score }} %
+                </i>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                {% if series[0].trailer %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ series[2] }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% else %}
+                    <p>No trailer available</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3 sum-close">
+                <p>{{ series[0].plot_overview }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
