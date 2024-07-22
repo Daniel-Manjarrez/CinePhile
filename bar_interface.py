@@ -19,10 +19,19 @@ def make_bar(watching, completed, onHold):
     # Sample data
     variables = {'Var1': watching, 'Var2': completed, 'Var3': onHold}
     total = sum(variables.values())
-    proportions = [value / total for value in variables.values()]
+    #proportions = [value / total for value in variables.values()]
 
     # Colors for each segment
-    colors = ['#ff9999', '#99ff99', '#66b3ff']
+    #colors = ['#ff9999', '#99ff99', '#66b3ff']
+
+    # Handle the case where total is zero
+    if total == 0:
+        proportions = [1.0]  # Single segment that takes the whole bar
+        colors = ['#ffffff']  # White color for the placeholder
+        variables = {'Placeholder': 1}
+    else:
+        proportions = [value / total for value in variables.values()]
+        colors = ['#ff9999', '#99ff99', '#66b3ff']
 
     fig = go.Figure()
 

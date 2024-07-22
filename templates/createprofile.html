@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>Create Profile</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>This page serves to create your profile.</i></span>
+    </div>
+
+    <!-- Profile Input Section -->
+    <form method="post" action="/createprofile/{{ user_ready }}" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="gender-name" class="form-label">Gender:</label>
+                <input type="text" class="form-control" id="gender-name" name="gender" placeholder="Type Gender">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="birthdate-name" class="form-label">Birthdate:</label>
+                <input type="date" class="form-control" id="birthdate-name" name="birthdate">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="status-name" class="form-label">Status:</label>
+                <input type="text" class="form-control" id="status-name" name="status" placeholder="Type Status">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="bio-name" class="form-label">Bio:</label>
+                <input type="text" class="form-control" id="bio-name" name="bio" placeholder="Type Bio">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="profile-pic" class="form-label">Profile Picture:</label>
+                <input type="file" class="form-control" id="profile-pic" name="profile_pic">
+            </div>
+        </div>
+
+        <!-- Create Button Section -->
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3 text-center">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Function to print message to console
+    function printMessage(event) {
+        var gender = document.getElementById("gender-name").value.trim(); // Trim whitespace
+        var birthdate = document.getElementById("birthdate-name").value.trim(); // Get selected birthdate
+        var status = document.getElementById("status-name").value.trim(); // Get selected status
+        var bio = document.getElementById("bio-name").value.trim();
+        var profilePic = document.getElementById("profile-pic").files[0]; // Get the profile picture file
+
+        var movieLink = "/createprofile"
+        var genderpart = "empty";
+        var birthdatepart = "empty";
+        var statuspart = "empty";
+        var biopart = "empty";
+        var profilePicPart = "empty";
+
+        if (gender) {
+            genderpart = encodeURIComponent(gender)
+        } else {
+            genderpart = encodeURIComponent(genderpart)
+        }
+        if (status) {
+            statuspart = encodeURIComponent(status)
+        } else {
+            statuspart = encodeURIComponent(statuspart)
+        }
+        if (bio) {
+            biopart = encodeURIComponent(bio)
+        } else {
+            biopart = encodeURIComponent(biopart)
+        }
+        if (birthdate) {
+            birthdatepart = encodeURIComponent(birthdate)
+        } else {
+            birthdatepart = encodeURIComponent(birthdatepart)
+        }
+        if (profilePic) {
+            profilePicPart = encodeURIComponent(profilePic)
+        } else {
+            profilePicPart = encodeURIComponent(profilePicPart)
+        }
+
+        //movieLink += "/" + genderpart + "/" + birthdatepart + "/" + statuspart + "/" + biopart + "/" + profilePicPart;
+        document.getElementById("generate-button").setAttribute("href", movieLink);
+        console.log("Generated link:", movieLink);
+    }
+
+    // Function to handle keypress event
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') { // Check if Enter key is pressed
+            event.preventDefault(); // Prevent form submission if applicable
+            document.getElementById("generate-button").click(); // Trigger the Generate button click
+        }
+    }
+
+    // Attach event listener to the Generate button
+    document.getElementById("generate-button").addEventListener("click", printMessage);
+
+    // Attach keypress event listener to the input field
+    document.getElementById("bio-name").addEventListener("keypress", handleKeyPress);
+</script>
+
+{% endblock %}

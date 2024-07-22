@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>{{ title }}'s Reviews</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following are the reviews for {{ title }}:</i></span>
+    </div>
+
+    {% for review in review_list %}
+        <div class="row">
+            <div class="col-6 mb-3 draw-closer2">
+                <a href="/{{ review[2] }}/profile">
+                    <h2>{{ review[2] }}</h2>
+                </a>
+            </div>
+            <div class="col-6 mb-3 ratings draw-closer">
+                <i>
+                    <b>Score:</b> <span style="color:salmon;">{{ review[1] }} / 100 </span>
+                    <b>Review Date:</b> <span style="color:lightgreen;">{{ review[5] }} </span>
+                    <b>User's # of Reviews:</b> <span style="color:aqua;">{{ review[4] }} </span>
+                </i>
+            </div>
+
+            <div class="col-md-6 mb-3 draw-closer2">
+                {% if review[3] %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ review[3] }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% else %}
+                    <p>No profile picture available</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3 sum-close draw-closer">
+                <p>{{ review[0] }}</p>
+            </div>
+        </div>
+    {% endfor %}
+        
+</div>
+
+{% endblock %}

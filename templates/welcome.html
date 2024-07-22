@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='icone.png')}}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+
+    <title>My Media Mix</title>
+  </head>
+
+  <body>
+    
+    <div class="container welcoming">   
+        <div class="container mt-5">
+            <!-- Title Section -->
+            <div class="text-center mb-4">
+                <h1>My Media Mix
+                    <div class="card reeling" style="width: 20%;">
+                        <img 
+                                src="static/images/R.png" 
+                                class="card-img-top image-modified" 
+                                alt="profile pic">
+                    </div></h1>
+            </div>
+        
+            <!-- Get Started Button Section -->
+            <div class="text-center titling">
+                <a href="/get-started" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </div>
+
+  </body>
+</html>

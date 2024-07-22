@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>Edit Profile</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>This page serves to edit your profile info.</i></span>
+    </div>
+
+    <!-- Movie Input Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <label for="gender-name" class="form-label">Gender:</label>
+            <input type="text" class="form-control" id="gender-name" placeholder="Type Gender">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <label for="status-name" class="form-label">Status:</label>
+            <input type="text" class="form-control" id="status-name" placeholder="Type Status">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <label for="bio-name" class="form-label">Bio:</label>
+            <input type="text" class="form-control" id="bio-name" placeholder="Type Bio">
+        </div>
+    </div>
+
+    <!-- Generate Button Section -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3 text-center">
+            <a href="/movie/O" class="btn btn-primary" id="generate-button">Update</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to print message to console
+    function printMessage(event) {
+        var gender = document.getElementById("gender-name").value.trim(); // Trim whitespace
+        var status = document.getElementById("status-name").value.trim(); // Get selected status
+        var bio = document.getElementById("bio-name").value.trim();
+        var movieLink = "/editprofile"
+        var genderpart = "empty"
+        var statuspart = "empty"
+        var biopart = "empty"
+        if (gender) {
+            genderpart = encodeURIComponent(gender)
+        } else {
+            genderpart = encodeURIComponent(genderpart)
+        }
+        if (status) {
+            statuspart = encodeURIComponent(status)
+        } else {
+            statuspart = encodeURIComponent(statuspart)
+        }
+        if (bio) {
+            biopart = encodeURIComponent(bio)
+        } else {
+            biopart = encodeURIComponent(biopart)
+        }
+        movieLink += "/" + genderpart + "/" + statuspart + "/" + biopart;
+        document.getElementById("generate-button").setAttribute("href", movieLink);
+        console.log("Generated link:", movieLink);
+    }
+
+    // Function to handle keypress event
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') { // Check if Enter key is pressed
+            event.preventDefault(); // Prevent form submission if applicable
+            document.getElementById("generate-button").click(); // Trigger the Generate button click
+        }
+    }
+
+    // Attach event listener to the Generate button
+    document.getElementById("generate-button").addEventListener("click", printMessage);
+
+    // Attach keypress event listener to the input field
+    document.getElementById("bio-name").addEventListener("keypress", handleKeyPress);
+</script>
+
+{% endblock %}

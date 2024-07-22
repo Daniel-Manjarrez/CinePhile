@@ -225,3 +225,38 @@ input[type="text"]::placeholder {
 .friend-bottom {
     margin-bottom: 20px;
 }
+
+.reviewing {
+    position: relative;
+    left: -17px;
+}
+
+.welcoming {
+    position: relative;
+    top: 80px;
+}
+
+.welcoming2 {
+    position: relative;
+    top: 60px;
+}
+
+.titling {
+    margin-top: 50px;
+}
+
+.titling2 {
+    margin-top: 70px;
+}
+
+.reeling {
+    position: relative;
+    left: 450px;
+    margin-top: 50px;
+}
+
+.reeling2 {
+    position: relative;
+    left: 460px;
+    margin-top: 50px;
+}

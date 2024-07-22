@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>{{ current_user }}'s Reviews</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following are the reviews of {{ current_user }}:</i></span>
+    </div>
+
+    {% for review in reviews_of_user %}
+        <div class="row">
+            <div class="col-6 mb-3 draw-closer2">
+                <a href="/overview/{{ review[6] }}">
+                    <h2>{{ review[6] }}</h2>
+                </a>
+            </div>
+            <div class="col-6 mb-3 ratings draw-closer">
+                <i>
+                    <b>Score:</b> <span style="color:salmon;">{{ review[1] }} / 100 </span>
+                    <b>Review Date:</b> <span style="color:lightgreen;">{{ review[5] }} </span>
+                    <b>Review #:</b> <span style="color:aqua;">{{ review[4] }} </span>
+                </i>
+            </div>
+
+            <div class="col-md-6 mb-3 draw-closer2">
+                {% if review[7] %}
+                    <div class="col-md-4 mb-4 reviewing">
+                        <div class="card" style="width: 150%;">
+                            <a href="/overview/{{ review[6] }}">
+                                <img 
+                                    src="{{ review[7] }}" 
+                                    class="card-img-top image-modified" 
+                                    alt="profile pic">
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No profile picture available</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3 sum-close draw-closer">
+                <p>{{ review[0] }}</p>
+            </div>
+        </div>
+    {% endfor %}
+        
+</div>
+
+{% endblock %}

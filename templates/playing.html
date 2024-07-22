@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    var current_time = "{{ current_time }}";
+    var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+    console.log("Current time:", current_time);
+    console.log("Elapsed time:", elapsed_time, "minutes");
+</script>
+
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-4">
+        <h1>What's Currently Airing</h1>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="text-center mb-4">
+        <span class="intro"><i>The following is a comprehensive list of what's airing now:</i></span>
+    </div>
+
+    {% for movie in movies_list %}
+        <div class="row" style="margin-bottom: -300px;">
+            <div class="col-6 mb-3" style="position: relative; top: 10px; left: 180px;">
+                <h2>{{ movie.original_title }}</h2>
+            </div>
+            <div class="col-6 mb-3 ratings" style="position: relative; left: -180px; top:65px;">
+                <i>
+                    <b>Release Date:</b> {{ movie.release_date }} 
+                    <b>Original Langauge:</b> {{ movie.original_language }}
+                </i>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                {% if movie.poster_path %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img class="responsive-img" src="{{ movie.poster_path }}" alt="Movie Poster" style="width: 30%; height: auto; position: relative; top: -300px; left: 180px;">
+                    </div>
+                {% else %}
+                    <p>No trailer available</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3 sum-close" style="position: relative; left: -180px; top: 40px;">
+                <p>{{ movie.overview }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -17,7 +17,7 @@
 
     <!-- Introduction Section -->
     <div class="text-center mb-4">
-        <span class="intro"><i>The following are the details of your generated recommendation.</i></span>
+        <span class="intro"><i>The following are the details retrieved of your request.</i></span>
     </div>
 
     <!-- Movie Details Section -->
@@ -27,9 +27,9 @@
         </div>
         <div class="col-6 mb-3 ratings">
             <i>
-                <b>Movie Rating:</b> {{ movie.us_rating }} 
-                <b>User Score:</b> {{ movie.user_rating }} / 10 
-                <b>Critic Score:</b> {{ movie.critic_score }} %
+                <b>Movie Rating:</b> <span class="red">{{ movie.us_rating }}</span> 
+                <b>User Score:</b> <span class="green">{{ movie.user_rating }} / 10</span>
+                <b>Critic Score:</b> <span class="blue">{{ movie.critic_score }} %</span>
             </i>
         </div>
 

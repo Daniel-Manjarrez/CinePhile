@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='icone.png')}}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+
+    <title>My Media Mix</title>
+  </head>
+
+  <body>
+    
+    <script>
+        var current_time = "{{ current_time }}";
+        var elapsed_time = parseFloat("{{ elapsed_time }}").toFixed(2);
+        console.log("Current time:", current_time);
+        console.log("Elapsed time:", elapsed_time, "minutes");
+    </script>
+    
+    <div class="container mt-5">
+        <!-- Title Section -->
+        <div class="text-center mb-4">
+            <h1>Log Into Account</h1>
+        </div>
+    
+        <!-- Introduction Section -->
+        <div class="text-center mb-4">
+            <span class="intro"><i>This page serves to set up your profile.</i></span>
+        </div>
+    
+        <!-- Profile Input Section -->
+        <!-- Movie Input Section -->
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="username-name" class="form-label">What's your username?</label>
+                <input type="text" class="form-control" id="username-name" placeholder="Type Your Username">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <label for="password-name" class="form-label">What's your password?</label>
+                <input type="password" class="form-control" id="password-name" placeholder="Type Your Password">
+            </div>
+        </div>
+
+        <!-- Generate Button Section -->
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3 text-center">
+                <a href="/movie/O" class="btn btn-primary" id="generate-button">Login</a>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        // Function to print message to console
+        function printMessage(event) {
+            var username = document.getElementById("username-name").value.trim(); // Trim whitespace
+            var password = document.getElementById("password-name").value.trim(); // Get selected birthdate
+    
+            var movieLink = "/loggingin/" + encodeURIComponent(username) + "/" + encodeURIComponent(password)
+    
+            //movieLink += "/" + genderpart + "/" + birthdatepart + "/" + statuspart + "/" + biopart + "/" + profilePicPart;
+            document.getElementById("generate-button").setAttribute("href", movieLink);
+            console.log("Generated link:", movieLink);
+        }
+    
+        // Function to handle keypress event
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') { // Check if Enter key is pressed
+                event.preventDefault(); // Prevent form submission if applicable
+                document.getElementById("generate-button").click(); // Trigger the Generate button click
+            }
+        }
+    
+        // Attach event listener to the Generate button
+        document.getElementById("generate-button").addEventListener("click", printMessage);
+    
+        // Attach keypress event listener to the input field
+        document.getElementById("bio-name").addEventListener("keypress", handleKeyPress);
+    </script>
+
+  </body>
+</html>

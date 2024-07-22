@@ -18,7 +18,7 @@
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 
-    <title>CinePhile</title>
+    <title>My Media Mix</title>
   </head>
 
   <body>
@@ -26,7 +26,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <!-- Website title with a link to the homepage -->
-    <a class="navbar-brand home-space" href="/">Home</a>
+    <a class="navbar-brand home-space" href="/dashboard">Home</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -35,37 +35,61 @@
       <!-- Navbar links -->
       <ul class="navbar-nav" style="padding-right: 5px;">
         <li class="nav-item">
-          <a class="nav-link" href="/reelrecs">Reel Recs</a>
+          <a class="nav-link" href="/reelrecs"><span class="">Reel Recs</span></a>
         </li>
       </ul>
 
       <ul class="navbar-nav" style="padding-right: 5px;">
         <li class="nav-item">
-          <a class="nav-link" href="/searchuser">Find Users</a>
+          <a class="nav-link" href="/reviewsearch"><span class="">Reviews</span></a>
         </li>
       </ul>
 
       <ul class="navbar-nav" style="padding-right: 5px;">
         <li class="nav-item">
-          <a class="nav-link" href="/additem">Add Movie/Series</a>
+          <a class="nav-link" href="/searchuser"><span class="">Find Users</span></a>
         </li>
       </ul>
 
       <ul class="navbar-nav" style="padding-right: 5px;">
         <li class="nav-item">
-          <a class="nav-link" href="/reelrecs">Edit Profile</a>
-        </li>
-      </ul>
-
-      <ul class="navbar-nav" style="padding-right: 749px;">
-        <li class="nav-item">
-          <a class="nav-link" href="/readme">Read Me</a>
+          <a class="nav-link" href="/searchmovie"><span class="">Find Movie</span></a>
         </li>
       </ul>
 
       <ul class="navbar-nav" style="padding-right: 5px;">
         <li class="nav-item">
-          <a class="nav-link" href="/reelrecs">Log Out</a>
+          <a class="nav-link" href="/additem"><span class="">Add Movie/Series</span></a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav" style="padding-right: 5px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/addreview"><span class="">Add Review</span></a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav" style="padding-right: 5px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/addingfriend">Manage Friends</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav" style="padding-right: 5px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/currentlyairing">Currently Airing</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav" style="padding-right: 250px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/editprofile">Edit Profile</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav" style="padding-right: 5px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Log Out</a>
         </li>
       </ul>
     </div>
