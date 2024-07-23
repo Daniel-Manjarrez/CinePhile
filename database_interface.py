@@ -1,4 +1,5 @@
 import sqlite3
+import os
 import csv
 
 def print_all_entries(cursor):
@@ -22,9 +23,13 @@ def print_query_retrieval(data):
 
 # Function to create a SQLite database and import data from CSV
 def create_sqlite_db(csv_file, db_file):
+    # Use os.path to ensure the paths are correct
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(base_dir, csv_file)
+    db_path = os.path.join(base_dir, db_file)
     
     # connect to SQLite database (will create it if it doesn't exist)
-    conn = sqlite3.connect(db_file)
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
     if conn is not None and cursor is not None:
@@ -47,7 +52,7 @@ def create_sqlite_db(csv_file, db_file):
     ''')
 
     # read data from CSV and insert into the SQLite table
-    with open(csv_file, 'r', encoding='utf-8') as f:
+    with open(csv_path, 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
         next(reader)  # Skip header row
         for row in reader:
@@ -60,26 +65,3 @@ def create_sqlite_db(csv_file, db_file):
     conn.commit()
 
     return (conn, cursor)
-
-"""
-
-# Specify your CSV file and SQLite database file
-#csv_file = 'title_id_map.csv'
-csv_file = 'title_id_map.csv'
-db_file = 'movies.db'
-
-# Call function to create SQLite database and import data
-connection, database_cursor = create_sqlite_db(csv_file, db_file)
-
-print()
-
-query = 'SELECT * FROM movies WHERE title = "Spider-Man 2"'
-data_retrieved = query_database(query, database_cursor)
-
-print_query_retrieval(data_retrieved)
-
-print()
-
-close_database_connection(connection)
-
-"""

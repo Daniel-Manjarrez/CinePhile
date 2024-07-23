@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, session
 import os
 import openai
 import requests
@@ -15,8 +15,6 @@ from database_interface import create_sqlite_db
 from bar_interface import make_bar
 from openai import OpenAI
 
-
-#api_key = '8YQ53Ao5sqOGEq826OfsK3PqOEQBWY36Iv0KJsTx'
 api_key = 'VdOqVd04mWYqEU46GwwclqlBTq3pZpvkZgjOv3m7'
 base_url = 'https://api.watchmode.com/v1/title/'
 gpt_api = ""
@@ -24,8 +22,6 @@ api_key_extra = 'c4f00ce17c0faa40f53c4be57abbc890'
 
 csv_file = 'title_id_map.csv'
 db_file = 'movies.db'
-
-# reviews = dict()
 
 def get_now_playing_movies(api_key):
     url = f"https://api.themoviedb.org/3/movie/now_playing?api_key={api_key}&region=US"
@@ -51,7 +47,7 @@ def get_now_playing_movies(api_key):
         
         return movies
     else:
-        print(f"Error: Unable to fetch data. Status code: {response.status_code}")
+        #print(f"Error: Unable to fetch data. Status code: {response.status_code}")
         return None
 
 def get_current_date():
@@ -60,7 +56,6 @@ def get_current_date():
 def convert_backslashes_to_slashes(path_str):
     # Replace all instances of backslashes with forward slashes
     return path_str.replace('\\', '/')
-
 
 def convert_date(date_str):
     # Convert the string to a datetime object
@@ -239,7 +234,67 @@ users = {
             2,
             3,
             1
+        ],
+        "reviews" : [
+            
         ]
+    },
+    5: {
+        "id" : 5,
+        "username" : "VenomSlayer",
+        "profile_picture" : "https://cdn.myanimelist.net/s/common/userimages/04773549-2aa9-48f2-83a0-e00eee70ef58_225w?s=ae03e775664fe00fe831dec8a741348a",
+        "currently_watching": [],
+        "completed" : 0, # 1
+        "watching" : 0, # 3
+        "on_hold" : 0, # 5
+        "status" : "Relaxing",
+        "bio" : "Passionate about superhero movies, I love diving deep into captivating storylines and thrilling adventures. Whether it's epic battles, origin stories, or ensemble blockbusters, I enjoy delving into the intricacies of each narrative. Always on the lookout for my next great watch, let's geek out over our favorite superhero flicks together!",
+        "joined" : "July 23rd, 2024",
+        "birthdate" : "February 17",
+        "gender" : "Male",
+        "movies" : {},
+        "series" : {},
+        "recent" : [],
+        "friends" : [],
+        "reviews" : []
+    },
+    6: {
+        "id" : 6,
+        "username" : "Danbeza45",
+        "profile_picture" : "https://cdn.myanimelist.net/s/common/userimages/c083cad7-41a3-46b5-931e-e1d62c6b9fd2_225w?s=be5edf7c281dc1fa5ff171d24aade21b",
+        "currently_watching": [],
+        "completed" : 0, # 1
+        "watching" : 0, # 3
+        "on_hold" : 0, # 5
+        "status" : "Resting",
+        "bio" : "Passionate about horror movies, I love diving deep into spine-chilling storylines and eerie atmospheres. Whether it's psychological thrillers, supernatural tales, or slasher flicks, I enjoy exploring the intricacies of each narrative. Always on the lookout for my next great scare, let's geek out over our favorite horror films together!",
+        "joined" : "July 21st, 2024",
+        "birthdate" : "April 11",
+        "gender" : "Male",
+        "movies" : {},
+        "series" : {},
+        "recent" : [],
+        "friends" : [],
+        "reviews" : []
+    },
+    7: {
+        "id" : 7,
+        "username" : "Abdumu78",
+        "profile_picture" : "https://cdn.myanimelist.net/s/common/userimages/8f3e8237-3acb-4db2-af15-8b0ff22ef842_225w?s=3b4abe79a94a6daf1077957bc0a4eea9",
+        "currently_watching": [],
+        "completed" : 0, # 1
+        "watching" : 0, # 3
+        "on_hold" : 0, # 5
+        "status" : "Living",
+        "bio" : "Passionate about action and thriller movies, I love diving deep into captivating storylines and pulse-pounding adventures. Whether it's high-stakes heists, intense combat scenes, or edge-of-your-seat suspense, I enjoy exploring the intricacies of each narrative. Always on the lookout for my next great watch, let's geek out over our favorite action and thriller flicks together!",
+        "joined" : "July 22nd, 2024",
+        "birthdate" : "March 29",
+        "gender" : "Male",
+        "movies" : {},
+        "series" : {},
+        "recent" : [],
+        "friends" : [],
+        "reviews" : []
     }
 }
 
@@ -391,7 +446,65 @@ users_names = {
             2,
             3,
             1
-        ]
+        ],
+        "reviews" : []
+    },
+    "VenomSlayer" : {
+        "id" : 5,
+        "username" : "VenomSlayer",
+        "profile_picture" : "https://cdn.myanimelist.net/s/common/userimages/04773549-2aa9-48f2-83a0-e00eee70ef58_225w?s=ae03e775664fe00fe831dec8a741348a",
+        "currently_watching": [],
+        "completed" : 0, # 1
+        "watching" : 0, # 3
+        "on_hold" : 0, # 5
+        "status" : "Relaxing",
+        "bio" : "Passionate about superhero movies, I love diving deep into captivating storylines and thrilling adventures. Whether it's epic battles, origin stories, or ensemble blockbusters, I enjoy delving into the intricacies of each narrative. Always on the lookout for my next great watch, let's geek out over our favorite superhero flicks together!",
+        "joined" : "July 23rd, 2024",
+        "birthdate" : "February 17",
+        "gender" : "Male",
+        "movies" : {},
+        "series" : {},
+        "recent" : [],
+        "friends" : [],
+        "reviews" : []
+    },
+    "Danbeza45" : {
+        "id" : 6,
+        "username" : "Danbeza45",
+        "profile_picture" : "https://cdn.myanimelist.net/s/common/userimages/c083cad7-41a3-46b5-931e-e1d62c6b9fd2_225w?s=be5edf7c281dc1fa5ff171d24aade21b",
+        "currently_watching": [],
+        "completed" : 0, # 1
+        "watching" : 0, # 3
+        "on_hold" : 0, # 5
+        "status" : "Resting",
+        "bio" : "Passionate about horror movies, I love diving deep into spine-chilling storylines and eerie atmospheres. Whether it's psychological thrillers, supernatural tales, or slasher flicks, I enjoy exploring the intricacies of each narrative. Always on the lookout for my next great scare, let's geek out over our favorite horror films together!",
+        "joined" : "July 21st, 2024",
+        "birthdate" : "April 11",
+        "gender" : "Male",
+        "movies" : {},
+        "series" : {},
+        "recent" : [],
+        "friends" : [],
+        "reviews" : []
+    }, 
+    "Abdumu78" : {
+        "id" : 7,
+        "username" : "Abdumu78",
+        "profile_picture" : "https://cdn.myanimelist.net/s/common/userimages/8f3e8237-3acb-4db2-af15-8b0ff22ef842_225w?s=3b4abe79a94a6daf1077957bc0a4eea9",
+        "currently_watching": [],
+        "completed" : 0, # 1
+        "watching" : 0, # 3
+        "on_hold" : 0, # 5
+        "status" : "Living",
+        "bio" : "Passionate about action and thriller movies, I love diving deep into captivating storylines and pulse-pounding adventures. Whether it's high-stakes heists, intense combat scenes, or edge-of-your-seat suspense, I enjoy exploring the intricacies of each narrative. Always on the lookout for my next great watch, let's geek out over our favorite action and thriller flicks together!",
+        "joined" : "July 22nd, 2024",
+        "birthdate" : "March 29",
+        "gender" : "Male",
+        "movies" : {},
+        "series" : {},
+        "recent" : [],
+        "friends" : [],
+        "reviews" : []
     }
 }
 
@@ -400,33 +513,17 @@ reviews = {
    1419997: [("With the likes of Zodiac (a sumptuous crime film with a long, mid-act ellipsis, and an inconclusive conclusion) and The Curious Case Of Benjamin Button (a flawed, inverted Forrest Gump substituting Baby Boomer nostalgia for textured Americana), Fincher has placed his full attentions on script, place and character, using his keen sense of production polish to lift his work out of its immediate cinematic context. He is one of the few directors working today who helms projects that gaze across broad horizons, from the classical past to the stylistic future. But The Social Network, while exhibiting the touch of a master filmmaker, is unmistakeably a film about the world we live in today.", 93, users[2]['username'], users[2]['profile_picture'], len(users[2]['reviews']), "10/15/2010")]
 }
 
-# VenomSlayer58 : Password56789
-
 passwords = {
     "asder4215" : "Password12345",
     "Tym" : "Password23456",
     "dankskillz" : "Password34567",
     "g4v1ng72" : "Password45678",
+    "VenomSlayer" : "SeoTech123",
+    "Danbeza45" : "SeoTech456", 
+    "Abdumu78" : "SeoTech789"
 }
 
 def update_stats():
-    """
-    # Calculate counts for completed, on hold, and watching
-    completed_count = sum(1 for movie in active_user["movies"].values() if movie[1] == "Completed") + \
-                    sum(1 for series in active_user["series"].values() if series[1] == "Completed")
-
-    on_hold_count = sum(1 for movie in active_user["movies"].values() if movie[1] == "On Hold") + \
-                    sum(1 for series in active_user["series"].values() if series[1] == "On Hold")
-
-    watching_count = sum(1 for movie in active_user["movies"].values() if movie[1] == "Watching") + \
-                    sum(1 for series in active_user["series"].values() if series[1] == "Watching")
-
-    # Update the user profile dictionary
-    active_user["completed"] = completed_count
-    active_user["on_hold"] = on_hold_count
-    active_user["watching"] = watching_count
-    """
-
     for inside_user in users:
         # Calculate counts for completed, on hold, and watching
         completed_count = sum(1 for movie in users[inside_user]["movies"].values() if movie[1] == "Completed") + \
@@ -523,19 +620,13 @@ def generate(user_input):
 
     # Fetch data from Watchmode API
     data = fetch_data(api_key, id)
-
-    #print(data)
-
     data_new = convert_data(data)
-    ##print(data_new)
-
 
     similar_movies = []
     for title_id in data['similar_titles']:
         title_result = df[df['Watchmode ID'] == title_id]
         movie = title_result['Title'].iloc[0]
         similar_movies.append(movie)
-
 
     if len(similar_movies) > 2:
         random_indices = random.sample(range(0, len(similar_movies) - 1), 3)
@@ -572,6 +663,7 @@ def convert_to_embedded_link(link):
     return embedded_link
 
 app = Flask(__name__)
+app.secret_key = 'my_very_secret_key_1234567890'
 
 @app.route('/<string:user>/profile', methods=['GET'])
 def displayUser(user):
@@ -594,9 +686,7 @@ def friendsDisplay(user):
     users_list = []
     users_dictionary = this_user['friends']
     for inner_user in users_dictionary:
-        ##print(users[inner_user])
         users_list.append(convert_friend(users[inner_user]))
-    ##print(users_list)
     return render_template('friends.html', given_user=user, friends=users_list)
 
 @app.route('/<string:user>/reviews', methods=['GET'])
@@ -605,6 +695,8 @@ def userReviews(user):
     reviews_of_user = given_user['reviews']
 
     reviews_list = []
+
+    print(reviews_of_user)
 
     for item in reviews_of_user:
         for inner_review in reviews[item]:
@@ -616,6 +708,7 @@ def userReviews(user):
                 data = data[0]
                 data = data[0]
                 close_database_connection(connection)
+
                 movie = fetch_data(api_key, data)
                 title_of_movie = movie['title']
                 poster_of_movie = movie['backdrop']
@@ -627,33 +720,26 @@ def userReviews(user):
 
                 reviews_list.append(copy)
 
-    print(reviews_list)
-    print(reviews_of_user)
-
     return render_template('userreviews.html', reviews_of_user=reviews_list, current_user=given_user['username'], user_info=given_user)
 
-
-# /The%20Dark%20Knight/review
-# /The%20Social%20Network/review
 @app.route('/<string:title>/review', methods=['GET'])
 def movieReview(title):
     connection, cursor = create_sqlite_db(csv_file, db_file)
     query = f'SELECT * FROM movies WHERE title="{title}"'
     data = query_database(query, cursor)
     data = data[0]
+    print(data)
     data = data[0]
+    print(data)
     close_database_connection(connection)
     movie = fetch_data(api_key, data)
-    #retrieved_review = reviews[movie['id']][0]
-    #retrieved_score = reviews[movie['id']][1]
-    #retrieved_user = users[reviews[movie['id']][2]]
 
-    review_list = reviews[movie['id']]
+    review_list = []
 
-    #print(data) #JSON
+    if movie['id'] in reviews:
+        review_list = reviews[movie['id']]
+
     return render_template('moviereview.html', title=movie["title"], review_list = review_list)
-
-# @app.route('/<string:user>/reviews', methods=['GET'])
 
 @app.route('/<string:user>/movies', methods=['GET'])
 def display1(user):
@@ -666,16 +752,12 @@ def display1(user):
         query = f'SELECT * FROM movies WHERE title="{title}"'
         data = query_database(query, cursor)
         data = data[0]
-        #print(data)
         close_database_connection(connection)
         movie_entry = fetch_data(api_key, data[0])
-        #print(movie_entry)
         standard_link = movie_entry['trailer']
         embedded_link = convert_to_embedded_link(standard_link)
         movie_titles.append([movie_entry, movies_dict[title][1], embedded_link])
     return render_template('movies.html', given_user=user, movie_titles=movie_titles)
-
-# /currentlyairing
 
 @app.route('/currentlyairing', methods=['GET'])
 def displayingairing():
@@ -693,10 +775,8 @@ def display2(user):
         query = f'SELECT * FROM movies WHERE title="{title}"'
         data = query_database(query, cursor)
         data = data[0]
-        #print(data)
         close_database_connection(connection)
         series_entry = fetch_data(api_key, data[0])
-        #print(series_entry)
         standard_link = series_entry['trailer']
         embedded_link = convert_to_embedded_link(standard_link)
         series_titles.append([series_entry, series_dict[title][1], embedded_link])
@@ -713,10 +793,8 @@ def display3(user):
         query = f'SELECT * FROM movies WHERE title="{title}"'
         data = query_database(query, cursor)
         data = data[0]
-        #print(data)
         close_database_connection(connection)
         movie_entry = fetch_data(api_key, data[0])
-        #print(movie_entry)
         standard_link = movie_entry['trailer']
         embedded_link = convert_to_embedded_link(standard_link)
         movie_titles.append([movie_entry, movies_dict[title][1], embedded_link])
@@ -729,15 +807,12 @@ def display3(user):
         query = f'SELECT * FROM movies WHERE title="{title}"'
         data = query_database(query, cursor)
         data = data[0]
-        #print(data)
         close_database_connection(connection)
         series_entry = fetch_data(api_key, data[0])
-        #print(series_entry)
         standard_link = series_entry['trailer']
         embedded_link = convert_to_embedded_link(standard_link)
         series_titles.append([series_entry, series_dict[title][1], embedded_link])
     return render_template('all.html', given_user=user, movie_titles=movie_titles, series_titles=series_titles)
-
 
 @app.route('/reelrecs')
 def recs():
@@ -765,7 +840,9 @@ def addingfriendscreen():
 
 @app.route('/addfriend/<string:user_planned>')
 def addingfriend(user_planned):
-    global active_user
+    active_user = session.get('active_user')
+    session['active_user'] = users[users_names[active_user['username']]['id']]
+    active_user = session.get('active_user')
     active_user_here = active_user['id']
     active_user_here_name = active_user['username']
     current_id_here = users_names[user_planned]['id']
@@ -779,8 +856,6 @@ def addingfriend(user_planned):
 def editing():
     return render_template('editprofile.html')
 
-# /create/VenomSlayer58
-
 @app.route('/create/<string:user_planned>/<string:password>')
 def create(user_planned, password, methods=['GET']):
     user_to_make = user_planned
@@ -789,13 +864,13 @@ def create(user_planned, password, methods=['GET']):
 
 @app.route('/loggingin/<string:user_access>/<string:password>')
 def getinside(user_access, password):
-    global active_user
-    active_user = users[users_names[user_access]['id']]
-
-    if password == passwords[user_access]:
+    if user_access in users_names and password == passwords.get(user_access):
+        session['active_user'] = users[users_names[user_access]['id']]
         print("Login Successful")
-
-    return redirect(url_for('active'))
+        return redirect(url_for('active'))
+    else:
+        print("Login Failed")
+        return redirect(url_for('login'))
 
 # Directory to save uploaded profile pictures
 UPLOAD_FOLDER = 'static/images'
@@ -809,14 +884,7 @@ def creating(user_made):
     bio = request.form['bio']
     profile_pic = request.files['profile_pic']
     joining = convert_current_date(get_current_date())
-    
-    # Print the form data
-    print(gender)
     birthdate = convert_date(birthdate)
-    print(birthdate)
-    print(status)
-    print(bio)
-    print(joining)
     
     # Check if the profile picture was uploaded
     if profile_pic:
@@ -830,18 +898,9 @@ def creating(user_made):
         profile_pic.save(profile_pic_path)
         print(f"Profile picture saved to {profile_pic_path}")
 
-    print(convert_backslashes_to_slashes(profile_pic_path))
-
-    print(len(users))
-    print(users)
-
-    print(len(users_names))
-    print(user_made)
-
     users[len(users) + 1] = dict()
     users_names[user_made] = dict()
 
-    #####
     users[len(users)]['id'] = len(users)
     users_names[user_made]['id'] = len(users)
 
@@ -890,23 +949,18 @@ def creating(user_made):
     users[len(users)]['reviews'] = []
     users_names[user_made]['reviews'] = []
 
-    #users[len(users)]['profile_pic'] = "/" + convert_backslashes_to_slashes(profile_pic_path)
-    #users_names[user_made]['profile_pic'] = "/" + convert_backslashes_to_slashes(profile_pic_path)
-
-
-    # /static/images/testUser5.jpg
-
     users[len(users)]['profile_picture'] = "/" + convert_backslashes_to_slashes(profile_pic_path)
     users_names[user_made]['profile_picture'] = "/" + convert_backslashes_to_slashes(profile_pic_path)
 
     print("/" + convert_backslashes_to_slashes(profile_pic_path))
 
-    #login
     return redirect(url_for('login'))
 
 @app.route('/editprofile/<string:gender>/<string:status>/<string:bio>', methods=['GET'])
 def processingprofile(gender, status, bio):
-
+    active_user = session.get('active_user')
+    session['active_user'] = users[users_names[active_user['username']]['id']]
+    active_user = session.get('active_user')
     if gender != "empty":
         active_user["gender"] = gender
         users[active_user["id"]]['gender'] = gender
@@ -923,7 +977,6 @@ def processingprofile(gender, status, bio):
         users_names[users[active_user["id"]]['username']]['bio'] = bio
 
     return redirect(url_for('active'))
-
 
 @app.route('/reviewsearch')
 def searchreview():
@@ -947,24 +1000,24 @@ def createaccountscreen():
 def login():
     return render_template('login.html')
 
-# will become the /reelrecs route
 @app.route('/dashboard')
 def active():
-    global active_user
+    active_user = session.get('active_user')
+    session['active_user'] = users[users_names[active_user['username']]['id']]
+    active_user = session.get('active_user')
+    if active_user:
+        print(f"Active user: {active_user['username']}")
+    else:
+        print("No active user")
 
     update_stats()
-    user = active_user
-    print(user)
-    make_bar(user['watching'], user['completed'], user['on_hold'])
-    recent_dict = user['recent']
+    make_bar(active_user['watching'], active_user['completed'], active_user['on_hold'])
+    recent_dict = active_user['recent']
     recent = []
-    #print("HELLO")
-    #print(recent_dict)
     for entry in recent_dict:
         movie = fetch_data(api_key, entry)
-        #print(movie)
         recent.append(movie)
-    return render_template('home.html', user=user, recent=recent, movies=user['movies']) # home page
+    return render_template('home.html', user=active_user, recent=recent, movies=active_user['movies']) # home page
 
 @app.route('/processed/<string:type>/<string:process>/<string:title>', methods=['GET'])
 def processing(type, process, title):
@@ -974,8 +1027,10 @@ def processing(type, process, title):
     data = data[0]
     data = data[0]
     close_database_connection(connection)
-    
-    print(active_user)
+
+    active_user = session.get('active_user')
+    session['active_user'] = users[users_names[active_user['username']]['id']]
+    active_user = session.get('active_user')
 
     true_user = active_user['id']
     true_user = users[true_user]
@@ -1007,11 +1062,8 @@ def processing(type, process, title):
     recent_dict = active_user['recent']
 
     recent = []
-    #print("HELLO")
-    #print(recent_dict)
     for entry in recent_dict:
         movie = fetch_data(api_key, entry)
-        #print(movie)
         recent.append(movie)
 
     update_stats()
@@ -1032,6 +1084,10 @@ def processreview(type, title, review, rating):
 
     current_date = get_current_date()
 
+    active_user = session.get('active_user')
+    session['active_user'] = users[users_names[active_user['username']]['id']]
+    active_user = session.get('active_user')
+
     if movie_id not in reviews:
         reviews[movie_id] = [(review, int(rating), users[active_user["id"]]['username'], users[active_user["id"]]['profile_picture'], len(users[active_user["id"]]['reviews']) + 1, current_date)]
     else:
@@ -1043,10 +1099,6 @@ def processreview(type, title, review, rating):
         users[active_user["id"]]['reviews'].append(movie_id)
     if movie_id not in users_names[users[active_user["id"]]['username']]['reviews']:
         users_names[users[active_user["id"]]['username']]['reviews'].append(movie_id)
-
-    print(active_user["reviews"])
-    print(users[active_user["id"]]['reviews'])
-    print(users_names[users[active_user["id"]]['username']]['reviews'])
 
     return redirect(url_for('active'))
 
@@ -1092,7 +1144,6 @@ def learn2(title):
     title_result = df[df['Title'] == title]
     id = int(title_result['Watchmode ID'].iloc[0])
     data = fetch_data(api_key, id)
-    #print(data)
     standard_link = data['trailer']
     embedded_link = convert_to_embedded_link(standard_link)
 
