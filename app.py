@@ -6,6 +6,8 @@ import requests
 import json
 import random
 import pandas as pd
+import ast
+import portalocker
 from datetime import datetime
 from database_interface import print_all_entries
 from database_interface import close_database_connection
@@ -14,6 +16,7 @@ from database_interface import print_query_retrieval
 from database_interface import create_sqlite_db
 from bar_interface import make_bar
 from openai import OpenAI
+from sync import write_passwords_to_file, read_passwords_from_file, add_password, write_users_to_file, read_users_from_file, add_user, write_users_names_to_file, read_users_names_from_file, add_user_name, write_reviews_to_file, read_reviews_from_file, add_review
 
 api_key = 'VdOqVd04mWYqEU46GwwclqlBTq3pZpvkZgjOv3m7'
 base_url = 'https://api.watchmode.com/v1/title/'
@@ -524,6 +527,7 @@ passwords = {
 }
 
 def update_stats():
+    users = read_users_from_file()
     for inside_user in users:
         # Calculate counts for completed, on hold, and watching
         completed_count = sum(1 for movie in users[inside_user]["movies"].values() if movie[1] == "Completed") + \
@@ -540,6 +544,10 @@ def update_stats():
         users[inside_user]["on_hold"] = on_hold_count
         users[inside_user]["watching"] = watching_count
 
+    # Write updated users data to file
+    write_users_to_file(users)
+    
+    users_names = read_users_names_from_file()
     for inside_user_again in users_names:
         # Calculate counts for completed, on hold, and watching
         completed_count = sum(1 for movie in users_names[inside_user_again]["movies"].values() if movie[1] == "Completed") + \
@@ -556,6 +564,14 @@ def update_stats():
         users_names[inside_user_again]["on_hold"] = on_hold_count
         users_names[inside_user_again]["watching"] = watching_count
 
+    # Write updated users_names data to file
+    write_users_names_to_file(users_names)
+
+#
+write_passwords_to_file(passwords)
+write_users_to_file(users)
+write_users_names_to_file(users_names)
+write_reviews_to_file(reviews)
 update_stats()
 
 def fetch_data(api_key, search_query):
@@ -668,6 +684,8 @@ app.secret_key = 'my_very_secret_key_1234567890'
 @app.route('/<string:user>/profile', methods=['GET'])
 def displayUser(user):
     update_stats()
+    users_names = read_users_names_from_file()
+
     this_user = users_names[user]
     make_bar(this_user['watching'], this_user['completed'], this_user['on_hold'])
     recent_dict = this_user['recent']
@@ -682,6 +700,8 @@ def displayUser(user):
 
 @app.route('/<string:user>/friends', methods=['GET'])
 def friendsDisplay(user):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
     this_user = users_names[user]
     users_list = []
     users_dictionary = this_user['friends']
@@ -691,6 +711,8 @@ def friendsDisplay(user):
 
 @app.route('/<string:user>/reviews', methods=['GET'])
 def userReviews(user):
+    users_names = read_users_names_from_file()
+    reviews = read_reviews_from_file()
     given_user = users_names[user]
     reviews_of_user = given_user['reviews']
 
@@ -724,6 +746,7 @@ def userReviews(user):
 
 @app.route('/<string:title>/review', methods=['GET'])
 def movieReview(title):
+    reviews = read_reviews_from_file()
     connection, cursor = create_sqlite_db(csv_file, db_file)
     query = f'SELECT * FROM movies WHERE title="{title}"'
     data = query_database(query, cursor)
@@ -743,6 +766,7 @@ def movieReview(title):
 
 @app.route('/<string:user>/movies', methods=['GET'])
 def display1(user):
+    users_names = read_users_names_from_file()
     this_user = users_names[user]
     movies_dict = this_user['movies']
     movie_titles = []
@@ -766,6 +790,7 @@ def displayingairing():
 
 @app.route('/<string:user>/series', methods=['GET'])
 def display2(user):
+    users_names = read_users_names_from_file()
     this_user = users_names[user]
     series_dict = this_user['series']
     series_titles = []
@@ -784,6 +809,7 @@ def display2(user):
 
 @app.route('/<string:user>/all', methods=['GET'])
 def display3(user):
+    users_names = read_users_names_from_file()
     this_user = users_names[user]
     movies_dict = this_user['movies']
     movie_titles = []
@@ -840,6 +866,8 @@ def addingfriendscreen():
 
 @app.route('/addfriend/<string:user_planned>')
 def addingfriend(user_planned):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
     active_user = session.get('active_user')
     session['active_user'] = users[users_names[active_user['username']]['id']]
     active_user = session.get('active_user')
@@ -848,6 +876,9 @@ def addingfriend(user_planned):
     current_id_here = users_names[user_planned]['id']
     users[active_user_here]['friends'].append(current_id_here)
     users_names[active_user_here_name]['friends'].append(current_id_here)
+
+    write_users_to_file(users)
+    write_users_names_to_file(users_names)
 
     return redirect(url_for('active'))
 
@@ -858,12 +889,18 @@ def editing():
 
 @app.route('/create/<string:user_planned>/<string:password>')
 def create(user_planned, password, methods=['GET']):
+    passwords = read_passwords_from_file()
     user_to_make = user_planned
     passwords[user_planned] = password
+    write_passwords_to_file(passwords)
     return render_template('createprofile.html', user_ready=user_to_make)
 
 @app.route('/loggingin/<string:user_access>/<string:password>')
 def getinside(user_access, password):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
+    passwords = read_passwords_from_file()
+    
     if user_access in users_names and password == passwords.get(user_access):
         session['active_user'] = users[users_names[user_access]['id']]
         print("Login Successful")
@@ -878,6 +915,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/createprofile/<string:user_made>', methods=['POST'])
 def creating(user_made):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
+
     gender = request.form['gender']
     birthdate = request.form['birthdate']
     status = request.form['status']
@@ -954,10 +994,16 @@ def creating(user_made):
 
     print("/" + convert_backslashes_to_slashes(profile_pic_path))
 
+    write_users_to_file(users)
+    write_users_names_to_file(users_names)
+
     return redirect(url_for('login'))
 
 @app.route('/editprofile/<string:gender>/<string:status>/<string:bio>', methods=['GET'])
 def processingprofile(gender, status, bio):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
+
     active_user = session.get('active_user')
     session['active_user'] = users[users_names[active_user['username']]['id']]
     active_user = session.get('active_user')
@@ -975,6 +1021,9 @@ def processingprofile(gender, status, bio):
         active_user["bio"] = bio
         users[active_user["id"]]['bio'] = bio
         users_names[users[active_user["id"]]['username']]['bio'] = bio
+
+    write_users_to_file(users)
+    write_users_names_to_file(users_names)
 
     return redirect(url_for('active'))
 
@@ -1002,6 +1051,8 @@ def login():
 
 @app.route('/dashboard')
 def active():
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
     active_user = session.get('active_user')
     session['active_user'] = users[users_names[active_user['username']]['id']]
     active_user = session.get('active_user')
@@ -1021,6 +1072,9 @@ def active():
 
 @app.route('/processed/<string:type>/<string:process>/<string:title>', methods=['GET'])
 def processing(type, process, title):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
+
     connection, cursor = create_sqlite_db(csv_file, db_file)
     query = f'SELECT * FROM movies WHERE title="{title}"'
     data = query_database(query, cursor)
@@ -1069,10 +1123,17 @@ def processing(type, process, title):
     update_stats()
     make_bar(active_user['watching'], active_user['completed'], active_user['on_hold'])
 
+    write_users_to_file(users)
+    write_users_names_to_file(users_names)
+
     return redirect(url_for('active'))
 
 @app.route('/processedreview/<string:type>/<string:title>/<string:review>/<string:rating>', methods=['GET'])
 def processreview(type, title, review, rating):
+    users_names = read_users_names_from_file()
+    users = read_users_from_file()
+    reviews = read_reviews_from_file()
+
     connection, cursor = create_sqlite_db(csv_file, db_file)
     query = f'SELECT * FROM movies WHERE title="{title}"'
     data = query_database(query, cursor)
@@ -1099,6 +1160,10 @@ def processreview(type, title, review, rating):
         users[active_user["id"]]['reviews'].append(movie_id)
     if movie_id not in users_names[users[active_user["id"]]['username']]['reviews']:
         users_names[users[active_user["id"]]['username']]['reviews'].append(movie_id)
+
+    write_users_to_file(users)
+    write_users_names_to_file(users_names)
+    write_reviews_to_file(reviews)
 
     return redirect(url_for('active'))
 
